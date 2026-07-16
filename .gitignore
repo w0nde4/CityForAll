@@ -1,0 +1,36 @@
+# ========================
+# Java / Maven
+# ========================
+target/
+!.mvn/wrapper/maven-wrapper.jar
+*.class
+*.jar
+*.war
+
+# ========================
+# IDE
+# ========================
+.idea/
+*.iml
+.vscode/
+nbproject/
+nb-configuration.xml
+
+# ========================
+# Docker
+# ========================
+docker-compose.server.yml
+docker-compose.local.yml
+.env
+
+# ========================
+# OS
+# ========================
+.DS_Store
+Thumbs.db
+
+# ========================
+# Application
+# ========================
+*.log
+application-local.yml

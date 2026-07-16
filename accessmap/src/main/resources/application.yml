@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: accessmap-backend
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/accessmap}
+    username: ${DB_USER:accessmap}
+    password: ${DB_PASSWORD:accessmap}
+    hikari:
+      max-lifetime: 180000
+      idle-timeout: 120000
+
+  # Все JSON-поля наружу/внутрь — snake_case (curb_height, road_access, ...).
+  # Так Java-поле curbHeight само сериализуется в curb_height и совпадает
+  # с тем, что шлёт фронт (см. RampEntity в ramp.entity.ts) — без @JsonProperty
+  # на каждом поле. Единственное исключение (число в середине имени) закрыто
+  # точечно в CrossingEntity/DTO — см. комментарий там.
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
+  jpa:
+    hibernate:
+      # validate — Hibernate только проверяет, что схема совпадает с сущностями.
+      # Схему создаёшь миграциями (Flyway). Для быстрых локальных экспериментов
+      # можно временно поставить "update", но не на проде.
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+server:
+  port: 8080
+
+# Домены фронтенда, которым разрешён доступ (Leaflet-клиент). См. WebConfig.
+app:
+  cors:
+    allowed-origins:
+      - http://localhost:5173
+      - http://localhost:3000
+
+logging:
+  level:
+    org.hibernate.SQL: debug
